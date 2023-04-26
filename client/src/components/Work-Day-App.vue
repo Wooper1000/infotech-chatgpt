@@ -47,8 +47,7 @@ export default {
     };
   },
   methods:{
-    toggleOrderCard(index,ref) {
-      console.log(index,ref)
+    toggleOrderCard(index) {
       this.openedIndex = this.openedIndex === index ? null : index;
     },
 

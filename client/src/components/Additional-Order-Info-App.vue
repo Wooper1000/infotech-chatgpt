@@ -5,14 +5,14 @@
       </v-row>
     <v-row>
       <v-col cols="12" >
-      <v-row class="pa-0" v-for="(phone, index) in filteredPhones" :key="index">
+      <v-row class="pa-0" v-for="(phone,index) in filteredPhones" :key="index">
         <v-col class="pa-0" cols="5">{{phone.Контакт}} </v-col>
         <v-col  class="pa-0" cols="5"><a :href="'tel:'+phone?.['Телефон']">{{phone?.['Телефон']}}</a></v-col>
         <v-col class="pa-0" cols="2">
             <v-icon class="v-icon" @click="()=>{
               dialog.show=true;
               dialog.numberToCall=phone.Телефон;
-              dialog.number=(+order.Номер).toString().slice(1)+`0${index}`
+              dialog.number=(+order.Номер).toString().slice(1)+`0${phone.НомерСтроки}`
             }" color="green">mdi-phone</v-icon>
         </v-col>
       </v-row>
@@ -68,9 +68,10 @@ export default {
     filteredPhones() {
       let filteredPhones = this.order.КонтактныеДанные.filter(
           (contact) => {
-            return contact.Ключ === "PRIMARY" && contact.Телефон && contact.Телефон !== "";
+            return contact.Ключ === "PRIMARY" && contact.Телефон && contact.Телефон !== ""
           }
       );
+
       return filteredPhones;
     },
   },

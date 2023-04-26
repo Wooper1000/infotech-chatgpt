@@ -7,7 +7,7 @@
         </div>
       </div>
       <div class="order-card-header-center">
-        <span class="order-card-header-status order-card-header-item">{{ order.ТекущийСтатус }}</span>
+        <span class="order-card-header-status order-card-header-item" :style="order.ТекущийСтатус === 'Не хватает документов'?{color:'red'}:{color:'black'}">{{ order.ТекущийСтатус }}</span>
       </div>
       <div class="order-card-header-right">
         <div class="order-card-header-number order-card-header-item" @click="openBarcodeModal">
@@ -33,18 +33,19 @@
     <div class="order-card-more-info text-center">
       <v-btn color="primary" @click="toggleAdditionalInfo(+order.Номер)">Подробнее</v-btn>
     </div>
+    <v-dialog v-model="showBarcodeModal" max-width="400">
+      <v-card>
+        <v-card-title>Заявка № {{ order.Номер }}</v-card-title>
+        <v-card-text>
+          <v-img :src="'data:image/svg+xml;charset=UTF-8,' + barcodeData" width="100%" contain></v-img>
+        </v-card-text>
+        <v-card-actions>
+          <v-btn color="primary" @click="closeBarcodeModal">Закрыть</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </div>
-  <v-dialog v-model="showBarcodeModal" max-width="400">
-    <v-card>
-      <v-card-title>Заявка № {{ order.Номер }}</v-card-title>
-      <v-card-text>
-        <v-img :src="'data:image/svg+xml;charset=UTF-8,' + barcodeData" width="100%" contain></v-img>
-      </v-card-text>
-      <v-card-actions>
-        <v-btn color="primary" @click="closeBarcodeModal">Закрыть</v-btn>
-      </v-card-actions>
-    </v-card>
-  </v-dialog>
+
 </template>
 <script>
 import AdditionalOrderInfoApp from "@/components/Additional-Order-Info-App";
@@ -73,11 +74,10 @@ export default {
   methods: {
     toggleAdditionalInfo(index) {
       this.$emit('toggle', index);
-      this.$nextTick(() => {
         this.$refs.orderCardHeader.scrollIntoView({
           behavior: "smooth",
-        });
-      })},
+        }
+      )},
     formatDate(date) {
       const d = new Date(date);
       const day = d.getDate().toString().padStart(2, "0");
@@ -93,7 +93,7 @@ export default {
     },
     openBarcodeModal() {
       const svg = document.createElement('svg');
-      JsBarcode(svg, `${+this.order.Номер}`, {
+      JsBarcode(svg, `${this.order.Номер}`, {
         format: "CODE128",
         displayValue: false,
         height: 50,

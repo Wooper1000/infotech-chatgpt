@@ -25,6 +25,10 @@
               >
                 <v-list-item-title>{{ item.title }}</v-list-item-title>
               </v-list-item>
+              <hr>
+              <v-list-item class="text-red-accent-2" @click="logout">
+                <v-list-item-title >Выход</v-list-item-title>
+              </v-list-item>
             </v-list>
           </v-menu>
         </v-col>
@@ -40,7 +44,6 @@ export default {
       items: [
         { title: 'Активные' },
         { title: 'Выполненные' },
-        { title: 'Оборудование' },
       ],
     }
   },
@@ -50,6 +53,10 @@ export default {
     },
   },
   methods: {
+    logout() {
+      localStorage.clear();
+      this.$router.push('/login');
+    },
     setActiveFilter(filter) {
       this.$store.commit('SET_ACTIVE_FILTER', filter);
     },
