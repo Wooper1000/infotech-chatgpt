@@ -19,7 +19,9 @@ import PhotoUploader from "./infotech-requests/Photo-uploader.mjs";
 import loginController from "./controllers/login-controller.mjs";
 import ordersController from "./controllers/orders-controller.mjs";
 import callController from "./controllers/call-controller.mjs";
+import config from './config/config.json' assert { type: "json" }
 
+const PORT = config.port
 const app = express()
 const upload = multer({
     dest: "./photos"
@@ -30,7 +32,7 @@ app.use(bodyParser.json(
         extended: true
         , limit: '50mb'
     }));
-const PORT = 3000
+
 app.listen(PORT, () => console.log('App is listening on port ', PORT))
 
 
